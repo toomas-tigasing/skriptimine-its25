@@ -1,0 +1,93 @@
+# Kontroltoo küsimuste vastused
+
+1. Milline on "for" -tsukli pohisuntaks Bashis?
+
+* for muutuja in nimekiri
+* do
+*     kasud
+* done
+
+# Selgitus
+"for muutuja in nimekiri" -- maarab, et muutuja võtab jarjest iga vaartuse
+nimekirjast
+"do" -- margib tsukli keha algust
+"kasud" -- need kasud kaivitatakse iga kord, kui "muutuja" saab uue vaartuse;
+muutujale viidatakse kujul "$muutuja"
+"done" -- margib tsukli loppu
+# Naide
+for nimi in Mari Juri Kati
+do
+    echo "Tere, $nimi!"
+done
+
+2. Mis vahe on lihtsate vaartuste ja jutumarkides vaartuste?
+
+Lihtsad vaartused labivad sonalohestamise ja metamarkide
+laiendamise -- tuhikutega stringid voi failinimede mustrid jagunevad
+mitmeks elemendiks. Jutumarkides vaartused sailitavad 
+oma terviklikkuse -- tuhikud ja erimargid ei pohjusta jagunemist.
+Seetottu on muutujate kasutamine tsuklis uldiselt turvalisem
+jutumarkidega, eriti failinimede puhul, kus voib esineda tuhikuid.
+
+3. Mida teeb kasu asendamine (command subsitution) tsuklis? Too naide.
+
+Kasu asendamine kaivitab kasu ja asendab selle valjundiga. Suntaks on "$(kask).
+Tsuklis kasutatakse seda tavaliselt nimekirja genereerimiseks:
+
+#for fail in $(find . -name "*.txt")
+#do
+#	echo "fail"
+#done
+
+4. Milleks kasutatakse muutujat IFS?
+
+IFS maarab, milliste markide jargi Bash sonu eraldab. Tsuklites muudetakse
+seda sageli, et lugeda ridu korrektselt
+
+# Naide
+
+# IFS=$'\n'
+# for rida in $(cat fail.txt)
+#do
+#	echo "$rida"
+#done
+
+5. Miks ei ole soovitatav kasutada "for file in $(ls)"? Mis on parem lahendus?
+
+* Failinimed tuhikute, tabulaatorite voi reavahetustega jagunevad valesti
+* Metamargid failinimedes (*,?) laienevad ootamatult
+* "ls" valjund voib soltuda seadistustest (varvid, aliased jne)
+
+#Parem Lahendus
+
+#for file in *
+#do
+#	echo"$file"
+#done
+
+6. Kuidas naeb valja C-stiilis "for"-tsukkel Bashis?
+
+#for (( i=0; i<10; i++ ))
+#do
+#	echo "$i"
+#done
+
+Struktuur on sama, mis C-keeles: (( algvaartus; tingimus; samm ))
+
+7. Kuidas panna C-stiilis tsukkel lugema ainult paarisarve?
+
+#Mitu viise
+
+#for (( i=0; i<20; i+=2))
+#do
+#	echo "$i"
+#done
+
+# voi tingimusega tsukli sees:
+
+#for (( i=0; i<20; i++ ))
+#do
+#    if (( i % 2 == 0 )); then
+#	echo "$i"
+#    fi
+#done
